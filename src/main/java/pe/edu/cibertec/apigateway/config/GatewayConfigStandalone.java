@@ -1,15 +1,16 @@
 package pe.edu.cibertec.apigateway.config;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import lombok.RequiredArgsConstructor;
+
 @Configuration
 @RequiredArgsConstructor
-public class GatewayConfig {
+public class GatewayConfigStandalone {
 
     @Value("${user.service.url:http://localhost:8081}")
     private String userServiceUrl;
