@@ -89,11 +89,12 @@ public class JwtAuthenticationFilter implements WebFilter {
     private boolean isPublicPath(String path) {
         List<String> publicPaths = List.of(
                 "/api/auth/login",
-                "/api/auth/register",
+                "/api/auth/register", 
                 "/api/auth/validate",
                 "/api/auth/check-email",
-                "/api/products",  // Agregar acceso público a productos
+                "/api/products",  // Acceso público a productos
                 "/api/products/portadas",
+                "/api/health",    // Endpoint de salud público
                 "/portadas",
                 "/uploads",
                 "/actuator",
