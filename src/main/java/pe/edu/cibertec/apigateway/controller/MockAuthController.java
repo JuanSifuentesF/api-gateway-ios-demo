@@ -62,6 +62,35 @@ public class MockAuthController {
         return ResponseEntity.status(401).body(Map.of("message", "Credenciales incorrectas"));
     }
 
+    @PostMapping("/register")
+    public ResponseEntity<Map<String, Object>> register(@RequestBody RegisterRequest request) {
+        // Validar que no sea el usuario admin existente
+        if ("admin@admin.com".equals(request.getEmail())) {
+            return ResponseEntity.status(409).body(Map.of("message", "Este correo ya está registrado"));
+        }
+
+        // Validar email básico
+        if (request.getEmail() == null || !request.getEmail().contains("@")) {
+            return ResponseEntity.status(400).body(Map.of("message", "Email inválido"));
+        }
+
+        // Validar password básico
+        if (request.getPassword() == null || request.getPassword().length() < 6) {
+            return ResponseEntity.status(400).body(Map.of("message", "La contraseña debe tener al menos 6 caracteres"));
+        }
+
+        // Simular registro exitoso
+        int newUserId = (int)(Math.random() * 1000) + 100; // ID aleatorio entre 100-1099
+        
+        Map<String, Object> response = new HashMap<>();
+        response.put("id", newUserId);
+        response.put("email", request.getEmail());
+        response.put("nombre", request.getNombre() != null ? request.getNombre() : "Usuario");
+        response.put("message", "Usuario registrado exitosamente");
+
+        return ResponseEntity.ok(response);
+    }
+
     @GetMapping("/validate")
     public ResponseEntity<Map<String, Object>> validateToken(@RequestHeader("Authorization") String authorization) {
         try {
@@ -139,7 +168,7 @@ public class MockAuthController {
         }
     }
 
-    // Clase interna para el request
+    // Clases internas para los requests
     public static class LoginRequest {
         private String email;
         private String password;
@@ -150,5 +179,21 @@ public class MockAuthController {
         
         public String getPassword() { return password; }
         public void setPassword(String password) { this.password = password; }
+    }
+
+    public static class RegisterRequest {
+        private String email;
+        private String password;
+        private String nombre;
+
+        // Getters y setters
+        public String getEmail() { return email; }
+        public void setEmail(String email) { this.email = email; }
+        
+        public String getPassword() { return password; }
+        public void setPassword(String password) { this.password = password; }
+
+        public String getNombre() { return nombre; }
+        public void setNombre(String nombre) { this.nombre = nombre; }
     }
 }
