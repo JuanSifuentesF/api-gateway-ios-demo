@@ -16,8 +16,20 @@ public class GatewayConfigStandalone {
                         .path("/test")
                         .uri("http://httpbin.org:80"))
 
-                // Todas las rutas API se manejan localmente con MockAuthController
-                // No necesitamos rutear a servicios externos ya que todo es mock
+                // Ruta para Product Service (datos reales)
+                .route("product-service", r -> r
+                        .path("/product/**")
+                        .uri("lb://product-service"))
+
+                // Ruta para User Service (autenticación real)
+                .route("user-service", r -> r
+                        .path("/user/**")
+                        .uri("lb://user-service"))
+
+                // Ruta para Order Service
+                .route("order-service", r -> r
+                        .path("/order/**")
+                        .uri("lb://order-service"))
                 
                 .build();
     }
